@@ -28,7 +28,13 @@ jobs:
             - run: pip install -r requirements.txt
             - run: mkdocs build
             - run: mkdocs gh-deploy --force
-            - run: python copy_md.py
-            - run: git add .
-            - run: git commit -m "Add raw md files"
-            - run: git push origin gh-pages
+            - run:  |
+                cd site
+                git init
+                git remote add origin https://github.com/username/repo.git
+                git fetch origin gh-pages
+                git checkout gh-pages
+                python ../copy_md.py
+                git add md/
+                git commit -m "Add raw md files"
+                git push -f origin gh-pages

@@ -27,5 +27,8 @@ jobs:
                       mkdocs-material-
             - run: pip install -r requirements.txt
             - run: mkdocs build
-            - run: python copy_md.py
             - run: mkdocs gh-deploy --force
+            - run: python copy_md.py
+            - run: git add .
+            - run: git commit -m "Add raw md files"
+            - run: git push origin gh-pages

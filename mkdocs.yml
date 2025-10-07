@@ -33,8 +33,7 @@ watch:
     - includes
 
 plugins:
-    - search:
-        prebuild_index: true
+    - search
 
 theme:
     name: material

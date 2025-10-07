@@ -43,6 +43,8 @@ theme:
     features:
         - content.code.copy
         - navigation.footer
+        - search.highlight
+        - search.suggest
     font:
         text: Roboto
         code: Red Hat Mono

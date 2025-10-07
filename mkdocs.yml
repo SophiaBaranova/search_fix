@@ -37,6 +37,7 @@ plugins:
 
 theme:
     name: material
+    base: /search_fix/
     logo: assets/images/portaone-main-logo.png
     favicon: assets/images/favicon.ico
     features:

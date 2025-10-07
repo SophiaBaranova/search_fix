@@ -31,7 +31,7 @@ jobs:
             - run:  |
                 cd site
                 git init
-                git remote add origin https://github.com/username/repo.git
+                git remote add origin https://github.com/SophiaBaranova/search_fix.git
                 git fetch origin gh-pages
                 git checkout gh-pages
                 python ../copy_md.py

@@ -34,7 +34,6 @@ watch:
 
 plugins:
     - search
-    - offline
 
 theme:
     name: material

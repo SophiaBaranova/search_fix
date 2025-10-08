@@ -26,6 +26,32 @@ jobs:
                   restore-keys: |
                       mkdocs-material-
             - run: pip install -r requirements.txt
-            - run: python copy_md.py
             - run: mkdocs build
             - run: mkdocs gh-deploy --force
+            - name: Clone gh-pages branch (temp)
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  git clone --depth 1 --branch gh-pages https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} gh-pages-temp
+
+            - name: Copy raw .md into gh-pages clone
+              run: |
+                  python copy_md_to_ghpages.py gh-pages-temp
+
+            - name: Commit & push raw .md to gh-pages (if changed)
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  cd gh-pages-temp
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add md || true
+                  # Also add md/llms.txt if present
+                  git add md/llms.txt || true
+                  # if nothing staged, exit quietly
+                  if git diff --cached --quiet; then
+                      echo "No raw markdown changes to push"
+                  else
+                      git commit -m "Add/Update raw md files"
+                      git push origin gh-pages
+                  fi

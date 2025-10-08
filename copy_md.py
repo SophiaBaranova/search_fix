@@ -2,27 +2,29 @@ import os
 import shutil
 
 DOCS_DIR = "docs"
-SITE_DIR = "site"
+DEST_DIR = os.path.join(DOCS_DIR, "md")
 LLMS_FILE = "llms.txt"
 
+# Ensure destination root exists
+os.makedirs(DEST_DIR, exist_ok=True)
+
+# Copy llms.txt into docs/md/
 if os.path.exists(LLMS_FILE):
-    dest_llms = os.path.join(SITE_DIR, "llms.txt")
-    os.makedirs(os.path.dirname(dest_llms), exist_ok=True)
+    dest_llms = os.path.join(DEST_DIR, "llms.txt")
     shutil.copy2(LLMS_FILE, dest_llms)
 
-
+# Copy all .md files from docs/ into docs/md/, preserving structure
 for root, _, files in os.walk(DOCS_DIR):
-    ''' Copy source .md files to the SITE_DIR so that they are available at the same URL '''
     for f in files:
         if f.endswith(".md"):
             src_path = os.path.join(root, f)
-            # the relative path inside DOCS_DIR
-            rel_path = os.path.relpath(src_path, DOCS_DIR)
-            # the destination path
-            dest_path = os.path.join(SITE_DIR, rel_path)
 
-            # ensure directory exists in SITE_DIR
+            # Preserve relative path inside docs/
+            rel_path = os.path.relpath(src_path, DOCS_DIR)
+            dest_path = os.path.join(DEST_DIR, rel_path)
+
+            # Ensure destination subdirectory exists
             os.makedirs(os.path.dirname(dest_path), exist_ok=True)
 
-            # copy the file
+            # Copy the file
             shutil.copy2(src_path, dest_path)

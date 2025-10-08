@@ -19,6 +19,10 @@ for root, _, files in os.walk(DOCS_DIR):
         if f.endswith(".md"):
             src_path = os.path.join(root, f)
 
+            # Skip already copied files inside docs/md/ to prevent recursion
+            if os.path.commonpath([os.path.abspath(src_path), os.path.abspath(DEST_DIR)]) == os.path.abspath(DEST_DIR):
+                continue
+
             # Preserve relative path inside docs/
             rel_path = os.path.relpath(src_path, DOCS_DIR)
             dest_path = os.path.join(DEST_DIR, rel_path)
